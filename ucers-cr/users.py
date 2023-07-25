@@ -1,6 +1,6 @@
-from mysqlconnection import connectToMySQL
+from config.mysqlconnection import connectToMySQL
 
-class User:
+class Users:
     def __init__(self, data):
         self.id = data['id']
         self.first_name = data['first_name']
@@ -15,13 +15,11 @@ class User:
         results = connectToMySQL('users_schema').query_db(query)
         users = []
         for u in results:
-            users.append( cls(u) )
+            users.append(cls(u))
         return users
 
     @classmethod
     def save(cls, data):
         query = "INSERT INTO users (first_name,last_name,email) VALUES (%(first_name)s,%(last_name)s,%(email)s);"
-
-        # comes back as the new row id
         result = connectToMySQL('users_schema').query_db(query,data)
         return result
